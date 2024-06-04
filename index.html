@@ -86,8 +86,15 @@
       <button>Trigger a Global Error</button>
     </section>
   </main>
-
+                        
   <script>
+    class NotANumberError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "Not a Number Error";
+      }
+    }
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -95,13 +102,103 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
+
+      try {
       output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch(err){
+        if (err instanceof SyntaxError){
+          console.log("RIP ERROR LOL!");
+          throw new NotANumberError("Input is not a number");
+        }
+      } finally {
+        console.log("Arithmetic expression evaluated");
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
-
+    
     // Start your code here
     // You may move this JS to another file if you wish
+    let output = document.querySelector('output');
+    let firstNum = document.querySelector('#first-num');
+    let secondNum = document.querySelector('#second-num');
+    let operator = document.querySelector('#operator');
+    
+    for(let i = 0; i < errorBtns.length; i++){
+      errorBtns[i].addEventListener('click', function(){
+        switch (i){
+          case 0:
+            console.log(output.value);
+            break;
+          case 1:
+            console.error("Ruh Roh Raggy D:");
+            break;
+          case 2:
+            console.count(output.value);
+            break;
+          case 3:
+            console.warn("Be careful about doing this!!!");
+            break;
+          case 4:
+            console.assert(firstNum.value == secondNum.value, "Numbers are not equal");
+            break;
+          case 5:
+            console.clear();
+            break;
+          case 6:
+            console.dir(form);
+            break;
+          case 7:
+            console.dirxml(form);
+            break;
+          case 8:
+            console.group("I am a group" + output.value);
+            break;
+          case 9:
+            console.groupEnd();
+            break;
+          case 10:
+            console.table([firstNum.value, operator.value, secondNum.value, output.value]);
+            break;
+          case 11:
+            console.time("I am a timer :D");
+            break;
+          case 12:
+            console.timeEnd("I am a timer :D");
+            break;
+          case 13:
+            function walls(){
+              your();
+            }
+            function your(){
+              inside();
+            }
+            function inside(){
+              console.trace();
+            }
+            walls();
+            break;
+          case 14:
+            var old = window.onerror;
+            window.onerror = function(message, source, lineno, colno, error) {
+              // Log the error to the console
+              console.error(error + " at " + source + " on line number " + lineno + " at column " + colno);
+              console.log("Global window.onerror worked!");
+              window.onerror = old;
+              return true;
+            };
+            console.log(watesiggma);
+            break;
+        }
+      });
+    }
+  </script>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "593ebd0855d7470fb3ba18530fd93c5e"
+      // for more configuration options, see https://docs.trackjs.com
+    });
   </script>
 </body>
 
